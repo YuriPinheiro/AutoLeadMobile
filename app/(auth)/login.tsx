@@ -25,9 +25,8 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       const data = await loginRequest(email, password);
-
       await login(data.token);
-      console.log(data.token);
+
       router.replace("/home");
     } catch (error: any) {
       if (error instanceof CommonError) {

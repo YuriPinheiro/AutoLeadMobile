@@ -1,12 +1,23 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { useAuthStore } from "@/src/store/authStore";
 import { useRouter } from "expo-router";
+import { useEffect } from "react";
 import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
-
 export default function Home() {
   const router = useRouter();
+  const { user, logout } = useAuthStore();
 
   const data: any[] = []; // lista vazia por enquanto
+
+  useEffect(() => {
+    console.log("User:", user);
+  }, [user]);
+
+  const handleLogout = async () => {
+    await logout();
+    router.replace("/login");
+  };
 
   return (
     <ThemedView style={styles.container}>
@@ -19,11 +30,10 @@ export default function Home() {
         }
       />
 
-      <TouchableOpacity style={styles.fab} onPress={() => router.push("/create-lead")}>
-        <ThemedText style={styles.fabText}>+</ThemedText>
-      </TouchableOpacity>
+      <ThemedText>{user?.email}</ThemedText>
+      <ThemedText>{user?.role}</ThemedText>
 
-      <TouchableOpacity style={styles.fab} onPress={() => router.push("/login")}>
+      <TouchableOpacity style={styles.fab} onPress={handleLogout}>
         <ThemedText style={styles.fabText}>-</ThemedText>
       </TouchableOpacity>
     </ThemedView>
