@@ -22,6 +22,10 @@ export default function Home() {
       <TouchableOpacity style={styles.fab} onPress={() => router.push("/create-lead")}>
         <ThemedText style={styles.fabText}>+</ThemedText>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.fab} onPress={() => router.push("/login")}>
+        <ThemedText style={styles.fabText}>-</ThemedText>
+      </TouchableOpacity>
     </ThemedView>
   );
 }
