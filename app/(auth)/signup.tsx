@@ -31,7 +31,10 @@ export default function Signup() {
 
     try {
       const user = await signupRequest(name, phone, email, password);
-      console.log(user);
+      if (!user) {
+        setInvalidCredentials(true);
+        return;
+      }
       router.replace({
         pathname: "/login",
         params: { email: user.email },
