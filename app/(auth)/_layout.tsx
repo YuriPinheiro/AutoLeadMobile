@@ -1,4 +1,4 @@
-import { useTheme } from "@/hooks/use-theme";
+import { useTheme } from "@/src/hooks/use-theme";
 import { Stack } from "expo-router";
 import { View } from "react-native";
 

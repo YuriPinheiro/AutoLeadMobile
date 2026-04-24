@@ -1,4 +1,4 @@
-import { useTheme } from "@/hooks/use-theme";
+import { useTheme } from "@/src/hooks/use-theme";
 import { useAuthStore } from "@/src/store/authStore";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";

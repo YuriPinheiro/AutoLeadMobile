@@ -1,61 +1,71 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { CommonError } from "@/src/api/errors/common-error";
 import { useTheme } from "@/src/hooks/use-theme";
-import { login as loginRequest } from "@/src/services/authService";
-import { useAuthStore } from "@/src/store/authStore";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { register as signupRequest } from "@/src/services/authService";
+//import { useAuthStore } from "@/src/store/authStore";
+import { Link, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
-export default function Login() {
+export default function Signup() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [invalidCredentials, setInvalidCredentials] = useState(false);
 
-  const { email: emailParam } = useLocalSearchParams();
-
   const theme = useTheme();
   const styles = getStyles(theme);
-  const { login } = useAuthStore();
+  //const { login } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
-    if (emailParam) {
-      setEmail(emailParam as string);
-    }
-    console.log(emailParam);
-  }, [emailParam]);
-
-  useEffect(() => {
     setInvalidCredentials(false);
-  }, [email, password]);
+  }, [name, email, phone, password]);
 
-  const handleLogin = async () => {
-    try {
-      const data = await loginRequest(email, password);
-      await login(data.token);
-
-      router.replace("/home");
-    } catch (error: any) {
-      if (error instanceof CommonError) {
-        if (error.status === 403) {
-          setInvalidCredentials(true);
-        } else {
-          console.log(error.message);
-        }
-      } else {
-        console.log("Erro desconhecido");
-      }
+  const handleSignup = async () => {
+    if (!validateForm()) {
+      setInvalidCredentials(true);
+      return;
     }
+
+    try {
+      const user = await signupRequest(name, phone, email, password);
+      console.log(user);
+      router.replace({
+        pathname: "/login",
+        params: { email: user.email },
+      });
+    } catch (error: any) {
+      console.log("Erro ao criar conta:", error);
+    }
+  };
+
+  const validateForm = () => {
+    return (
+      name.trim() !== "" && phone.trim() !== "" && email.trim() !== "" && password.trim() !== ""
+    );
   };
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText style={styles.title}>Entrar</ThemedText>
+      <ThemedText style={styles.title}>Crie sua conta</ThemedText>
 
       <TextInput
-        value={email}
+        placeholder="Nome"
+        placeholderTextColor="#999"
+        style={[styles.input, invalidCredentials && styles.inputError]}
+        onChangeText={setName}
+      />
+
+      <TextInput
+        placeholder="Telefone"
+        placeholderTextColor="#999"
+        style={[styles.input, invalidCredentials && styles.inputError]}
+        onChangeText={setPhone}
+      />
+
+      <TextInput
         placeholder="Email"
         placeholderTextColor="#999"
         style={[styles.input, invalidCredentials && styles.inputError]}
@@ -70,12 +80,12 @@ export default function Login() {
         onChangeText={setPassword}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <ThemedText style={styles.buttonText}>Login</ThemedText>
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
+        <ThemedText style={styles.buttonText}>Criar</ThemedText>
       </TouchableOpacity>
 
-      <Link href="/signup" style={styles.signupLink}>
-        <ThemedText style={{ color: theme.primary }}>Criar conta</ThemedText>
+      <Link href="/login" style={styles.loginLink}>
+        <ThemedText style={{ color: theme.primary }}>Já tem uma conta? Entrar</ThemedText>
       </Link>
     </ThemedView>
   );
@@ -127,7 +137,7 @@ const getStyles = (theme: any) =>
       color: "#fff",
     },
 
-    signupLink: {
+    loginLink: {
       marginTop: 35,
       textAlign: "center",
       fontWeight: "bold",

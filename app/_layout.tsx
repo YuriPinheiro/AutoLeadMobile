@@ -3,8 +3,8 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
-import { useColorScheme } from "@/hooks/use-color-scheme";
-import { useTheme } from "@/hooks/use-theme";
+import { useColorScheme } from "@/src/hooks/use-color-scheme";
+import { useTheme } from "@/src/hooks/use-theme";
 import { useAuthStore } from "@/src/store/authStore";
 import { useEffect } from "react";
 import { View } from "react-native";
