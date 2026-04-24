@@ -11,7 +11,7 @@ export default function Home() {
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const data: any[] = []; // lista vazia por enquanto
+  const data: any[] = [{ id: 1, name: "Lead 1" }]; // lista com um item por enquanto
 
   useEffect(() => {
     console.log("User:", user);
@@ -22,12 +22,22 @@ export default function Home() {
     router.replace("/login");
   };
 
+  const handleAddLead = () => {
+    router.push({
+      pathname: "/lead/new",
+    });
+  };
+
   return (
     <ThemedView style={styles.container}>
       <FlatList
         data={data}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <ThemedText>Lead {item}</ThemedText>}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => router.push(`/lead/${item.id}`)}>
+            <ThemedText>Lead {item.name}</ThemedText>
+          </TouchableOpacity>
+        )}
         ListEmptyComponent={
           <ThemedText style={styles.emptyText}>Nenhum lead encontrado</ThemedText>
         }
@@ -37,7 +47,7 @@ export default function Home() {
       <ThemedText>{user?.email}</ThemedText>
       <ThemedText>{user?.role}</ThemedText>
 
-      <TouchableOpacity style={styles.fab} onPress={handleLogout}>
+      <TouchableOpacity style={styles.fab} onPress={handleAddLead}>
         <ThemedText style={styles.fabText}>-</ThemedText>
       </TouchableOpacity>
     </ThemedView>

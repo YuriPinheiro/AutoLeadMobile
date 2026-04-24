@@ -8,6 +8,7 @@ import { useTheme } from "@/src/hooks/use-theme";
 import { useAuthStore } from "@/src/store/authStore";
 import { useEffect } from "react";
 import { View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   const { isLoading, checkAuth } = useAuthStore();
@@ -25,18 +26,19 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <View style={{ flex: 1, backgroundColor: theme.background || "#0f0f0f" }}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: {
-              backgroundColor: theme.background || "#0f0f0f",
-            },
-            animation: "fade",
-          }}
-        />
-      </View>
-
+      <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
+        <View style={{ flex: 1, backgroundColor: theme.background || "#0f0f0f" }}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: theme.background || "#0f0f0f",
+              },
+              animation: "fade",
+            }}
+          />
+        </View>
+      </SafeAreaView>
       <StatusBar style="auto" />
     </ThemeProvider>
   );
