@@ -10,6 +10,9 @@ import { useEffect } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
+import '@/global.css';
+
 export default function RootLayout() {
   const { isLoading, checkAuth } = useAuthStore();
 
@@ -25,7 +28,9 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    
+    <GluestackUIProvider mode="dark">
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
         <View style={{ flex: 1, backgroundColor: theme.background || "#0f0f0f" }}>
           <Stack
@@ -41,5 +46,7 @@ export default function RootLayout() {
       </SafeAreaView>
       <StatusBar style="auto" />
     </ThemeProvider>
+    </GluestackUIProvider>
+  
   );
 }

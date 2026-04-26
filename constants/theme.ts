@@ -9,6 +9,7 @@ const darkSurface = "#161B1A";
 export const Colors = {
   light: {
     text: "#0B3D2E",
+    textSecondary: "#145A44",
     background: "#F4F7F6",
     tint: slytherinGreen,
     icon: "#145A44",
@@ -18,6 +19,7 @@ export const Colors = {
 
   dark: {
     text: "#E6E6E6",
+    textSecondary: "#A0A0A0",
     background: darkBg,
     tint: slytherinGreenLight,
     icon: silver,
